@@ -1,16 +1,18 @@
 package de.diskostu.demo.springboottutorial.student;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Objects;
 
 @Entity
 @Table
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Student {
@@ -46,5 +48,22 @@ public class Student {
     @SuppressWarnings("unused")
     public Integer getAge() {
         return Period.between(dob, LocalDate.now()).getYears();
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o))
+            return false;
+        Student student = (Student) o;
+        return id != null && Objects.equals(id, student.id);
+    }
+
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }
